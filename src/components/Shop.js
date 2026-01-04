@@ -11,6 +11,8 @@ export default function ShopPage() {
   const [priceRange, setPriceRange] = useState([0, 1000]);
   const [selectedRating, setSelectedRating] = useState(0);
   const [sortBy, setSortBy] = useState("relevance");
+  const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 8;
 
   // Sample products data
   const allProducts = [
@@ -110,6 +112,102 @@ export default function ShopPage() {
       category: "Furniture",
       type: "Chairs",
     },
+    {
+      id: 9,
+      image: "/assets/images/home/game.png",
+      title: "Pro Gaming Headset",
+      price: 199,
+      oldPrice: 250,
+      rating: 5,
+      reviews: 432,
+      discount: "-20%",
+      category: "Electronics",
+      type: "Gaming",
+    },
+    {
+      id: 10,
+      image: "/assets/images/home/keyboard.png",
+      title: "Wireless Mouse Pro",
+      price: 79,
+      oldPrice: 99,
+      rating: 4,
+      reviews: 287,
+      discount: "-20%",
+      category: "Electronics",
+      type: "Accessories",
+    },
+    {
+      id: 11,
+      image: "/assets/images/home/lcd.png",
+      title: "Curved Gaming Monitor 27",
+      price: 449,
+      oldPrice: 599,
+      rating: 5,
+      reviews: 198,
+      discount: "-25%",
+      category: "Electronics",
+      type: "Monitors",
+    },
+    {
+      id: 12,
+      image: "/assets/images/home/chair.png",
+      title: "Ergonomic Study Chair",
+      price: 189,
+      oldPrice: 249,
+      rating: 4,
+      reviews: 156,
+      discount: "-24%",
+      category: "Furniture",
+      type: "Chairs",
+    },
+    {
+      id: 13,
+      image: "/assets/images/home/game.png",
+      title: "Gaming Racing Wheel",
+      price: 299,
+      oldPrice: 399,
+      rating: 5,
+      reviews: 234,
+      discount: "-25%",
+      category: "Electronics",
+      type: "Gaming",
+    },
+    {
+      id: 14,
+      image: "/assets/images/home/keyboard.png",
+      title: "RGB Backlit Keyboard",
+      price: 129,
+      oldPrice: 179,
+      rating: 4,
+      reviews: 567,
+      discount: "-28%",
+      category: "Electronics",
+      type: "Accessories",
+    },
+    {
+      id: 15,
+      image: "/assets/images/home/lcd.png",
+      title: "Ultra-Wide Monitor 34",
+      price: 699,
+      oldPrice: 899,
+      rating: 5,
+      reviews: 289,
+      discount: "-22%",
+      category: "Electronics",
+      type: "Monitors",
+    },
+    {
+      id: 16,
+      image: "/assets/images/home/chair.png",
+      title: "Premium Gaming Chair",
+      price: 499,
+      oldPrice: 699,
+      rating: 5,
+      reviews: 445,
+      discount: "-29%",
+      category: "Furniture",
+      type: "Chairs",
+    },
   ];
 
   const categories = ["Electronics", "Furniture", "Clothing", "Books"];
@@ -121,12 +219,14 @@ export default function ShopPage() {
         ? prev.filter((c) => c !== category)
         : [...prev, category]
     );
+    setCurrentPage(1); // Reset to first page when filter changes
   };
 
   const handleTypeChange = (type) => {
     setSelectedTypes((prev) =>
       prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type]
     );
+    setCurrentPage(1); // Reset to first page when filter changes
   };
 
   // Filter products
@@ -138,7 +238,8 @@ export default function ShopPage() {
       selectedTypes.length === 0 || selectedTypes.includes(product.type);
     const priceMatch =
       product.price >= priceRange[0] && product.price <= priceRange[1];
-    const ratingMatch = selectedRating === 0 || product.rating >= selectedRating;
+    const ratingMatch =
+      selectedRating === 0 || product.rating >= selectedRating;
 
     return categoryMatch && typeMatch && priceMatch && ratingMatch;
   });
@@ -158,6 +259,75 @@ export default function ShopPage() {
         return 0;
     }
   });
+
+  // Pagination calculations
+  const totalPages = Math.ceil(sortedProducts.length / productsPerPage);
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const currentProducts = sortedProducts.slice(
+    indexOfFirstProduct,
+    indexOfLastProduct
+  );
+
+  // Pagination handlers
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
+  // Generate page numbers to display
+  const getPageNumbers = () => {
+    const pageNumbers = [];
+    const maxPagesToShow = 5;
+
+    if (totalPages <= maxPagesToShow) {
+      // Show all pages if total pages is less than max
+      for (let i = 1; i <= totalPages; i++) {
+        pageNumbers.push(i);
+      }
+    } else {
+      // Show first page
+      pageNumbers.push(1);
+
+      // Calculate range around current page
+      let startPage = Math.max(2, currentPage - 1);
+      let endPage = Math.min(totalPages - 1, currentPage + 1);
+
+      // Add ellipsis if needed
+      if (startPage > 2) {
+        pageNumbers.push("...");
+      }
+
+      // Add pages around current page
+      for (let i = startPage; i <= endPage; i++) {
+        pageNumbers.push(i);
+      }
+
+      // Add ellipsis if needed
+      if (endPage < totalPages - 1) {
+        pageNumbers.push("...");
+      }
+
+      // Show last page
+      pageNumbers.push(totalPages);
+    }
+
+    return pageNumbers;
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -238,9 +408,10 @@ export default function ShopPage() {
                     min="0"
                     max="1000"
                     value={priceRange[1]}
-                    onChange={(e) =>
-                      setPriceRange([priceRange[0], parseInt(e.target.value)])
-                    }
+                    onChange={(e) => {
+                      setPriceRange([priceRange[0], parseInt(e.target.value)]);
+                      setCurrentPage(1);
+                    }}
                     className="h-2 w-full cursor-pointer appearance-none rounded-lg bg-gray-200 accent-[#DB4444]"
                   />
                   <div className="flex items-center justify-between text-[14px] text-gray-700">
@@ -265,7 +436,10 @@ export default function ShopPage() {
                         type="radio"
                         name="rating"
                         checked={selectedRating === rating}
-                        onChange={() => setSelectedRating(rating)}
+                        onChange={() => {
+                          setSelectedRating(rating);
+                          setCurrentPage(1);
+                        }}
                         className="h-4 w-4 cursor-pointer accent-[#DB4444]"
                       />
                       <div className="flex items-center gap-1">
@@ -298,6 +472,7 @@ export default function ShopPage() {
                   setSelectedTypes([]);
                   setPriceRange([0, 1000]);
                   setSelectedRating(0);
+                  setCurrentPage(1);
                 }}
                 className="w-full rounded-md bg-gray-200 py-3 text-[14px] font-medium text-gray-700 transition-colors hover:bg-gray-300"
               >
@@ -315,7 +490,9 @@ export default function ShopPage() {
                   ALL COLLECTIONS
                 </h1>
                 <p className="mt-1 text-[14px] text-gray-600">
-                  Showing {sortedProducts.length} products
+                  Showing {indexOfFirstProduct + 1}-
+                  {Math.min(indexOfLastProduct, sortedProducts.length)} of{" "}
+                  {sortedProducts.length} products
                 </p>
               </div>
 
@@ -324,7 +501,10 @@ export default function ShopPage() {
                 <label className="text-[14px] text-gray-700">Sort by:</label>
                 <select
                   value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value)}
+                  onChange={(e) => {
+                    setSortBy(e.target.value);
+                    setCurrentPage(1);
+                  }}
                   className="rounded-md border border-gray-300 bg-white px-4 py-2 text-[14px] outline-none focus:border-[#DB4444]"
                 >
                   <option value="relevance">Relevance</option>
@@ -337,9 +517,9 @@ export default function ShopPage() {
             </div>
 
             {/* Products Grid */}
-            {sortedProducts.length > 0 ? (
+            {currentProducts.length > 0 ? (
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                {sortedProducts.map((product) => (
+                {currentProducts.map((product) => (
                   <div
                     key={product.id}
                     className="group relative overflow-hidden rounded-lg bg-white shadow-sm transition-shadow hover:shadow-lg"
@@ -389,7 +569,7 @@ export default function ShopPage() {
 
                     {/* Product Details */}
                     <div className="p-4">
-                      <h3 className="mb-2 text-[14px] font-medium text-black line-clamp-2 md:text-[16px]">
+                      <h3 className="mb-2 line-clamp-2 text-[14px] font-medium text-black md:text-[16px]">
                         {product.title}
                       </h3>
 
@@ -435,22 +615,52 @@ export default function ShopPage() {
             )}
 
             {/* Pagination */}
-            {sortedProducts.length > 0 && (
+            {currentProducts.length > 0 && totalPages > 1 && (
               <div className="mt-12 flex justify-center">
                 <div className="flex items-center gap-2">
-                  <button className="flex h-10 w-10 items-center justify-center rounded-md border border-gray-300 text-gray-700 transition-colors hover:bg-gray-100">
+                  {/* Previous Button */}
+                  <button
+                    onClick={handlePrevPage}
+                    disabled={currentPage === 1}
+                    className={`flex h-10 w-10 items-center justify-center rounded-md border border-gray-300 text-gray-700 transition-colors ${
+                      currentPage === 1
+                        ? "cursor-not-allowed opacity-50"
+                        : "hover:bg-gray-100"
+                    }`}
+                  >
                     ←
                   </button>
-                  <button className="flex h-10 w-10 items-center justify-center rounded-md bg-[#DB4444] text-white">
-                    1
-                  </button>
-                  <button className="flex h-10 w-10 items-center justify-center rounded-md border border-gray-300 text-gray-700 transition-colors hover:bg-gray-100">
-                    2
-                  </button>
-                  <button className="flex h-10 w-10 items-center justify-center rounded-md border border-gray-300 text-gray-700 transition-colors hover:bg-gray-100">
-                    3
-                  </button>
-                  <button className="flex h-10 w-10 items-center justify-center rounded-md border border-gray-300 text-gray-700 transition-colors hover:bg-gray-100">
+
+                  {/* Page Numbers */}
+                  {getPageNumbers().map((pageNum, index) => (
+                    <button
+                      key={index}
+                      onClick={() =>
+                        typeof pageNum === "number" && handlePageChange(pageNum)
+                      }
+                      disabled={pageNum === "..."}
+                      className={`flex h-10 min-w-[40px] items-center justify-center rounded-md px-2 text-[14px] font-medium transition-colors ${
+                        pageNum === currentPage
+                          ? "bg-[#DB4444] text-white"
+                          : pageNum === "..."
+                          ? "cursor-default border-0"
+                          : "border border-gray-300 text-gray-700 hover:bg-gray-100"
+                      }`}
+                    >
+                      {pageNum}
+                    </button>
+                  ))}
+
+                  {/* Next Button */}
+                  <button
+                    onClick={handleNextPage}
+                    disabled={currentPage === totalPages}
+                    className={`flex h-10 w-10 items-center justify-center rounded-md border border-gray-300 text-gray-700 transition-colors ${
+                      currentPage === totalPages
+                        ? "cursor-not-allowed opacity-50"
+                        : "hover:bg-gray-100"
+                    }`}
+                  >
                     →
                   </button>
                 </div>
