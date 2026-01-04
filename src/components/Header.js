@@ -27,9 +27,14 @@ export default function Header() {
     };
   }, []);
 
-  const handleMenuClick = (path) => {
+  const handleMenuClick = (path, section = null) => {
     setIsDropdownOpen(false);
-    router.push(path);
+    if (section) {
+      // Navigate to account page with specific section
+      router.push(`${path}?section=${section}`);
+    } else {
+      router.push(path);
+    }
   };
 
   const handleLogout = () => {
@@ -46,158 +51,168 @@ export default function Header() {
   };
 
   return (
-    <header className="w-full border-b border-gray-200">
-      <div className="mx-auto flex h-22 max-w-292.5 items-center justify-between px-4">
+    <header className="w-full border-b border-gray-200 bg-white">
+      <div className="mx-auto flex h-20 max-w-[1170px] items-center justify-between px-4 md:h-24">
         {/* Left: Brand */}
         <div className="flex items-center">
           <Link href="/">
-            <span className="text-[24px] font-bold text-black">Exclusive</span>
+            <span className="text-[20px] font-bold text-black md:text-[24px]">
+              Exclusive
+            </span>
           </Link>
         </div>
 
         {/* Center: Navigation */}
-        <nav className="hidden items-center gap-12 md:flex">
-          <Link href="/" className="text-[16px] font-normal text-black">
+        <nav className="hidden items-center gap-8 md:flex lg:gap-12">
+          <Link
+            href="/"
+            className="text-[14px] font-normal text-black transition-colors hover:text-[#DB4444] md:text-[16px]"
+          >
             Home
           </Link>
-          <Link href="/contact" className="text-[16px] font-normal text-black">
-            Contact
+          <Link
+            href="/shop"
+            className="text-[14px] font-normal text-black transition-colors hover:text-[#DB4444] md:text-[16px]"
+          >
+            Shop
           </Link>
-          <Link href="/about" className="text-[16px] font-normal text-black">
+          <Link
+            href="/about"
+            className="text-[14px] font-normal text-black transition-colors hover:text-[#DB4444] md:text-[16px]"
+          >
             About
           </Link>
-          {!user && (
-            <Link href="/signup" className="text-[16px] font-normal text-black">
-              Sign Up
-            </Link>
-          )}
+          <Link
+            href="/contact"
+            className="text-[14px] font-normal text-black transition-colors hover:text-[#DB4444] md:text-[16px]"
+          >
+            Contact
+          </Link>
+
         </nav>
 
         {/* Right: Search + Icons */}
-        <div className="flex items-center gap-4 md:gap-6">
+        <div className="flex items-center gap-3 md:gap-6">
           <div className="relative hidden sm:block">
             <input
               type="text"
               placeholder="What are you looking for?"
-              className="h-9.5 w-60.75 rounded-md bg-gray-100 pl-4 pr-10 text-[14px] text-black placeholder-gray-500 focus:outline-none"
+              className="h-9 w-48 rounded bg-gray-100 pl-4 pr-10 text-[12px] text-black placeholder-gray-500 outline-none focus:ring-1 focus:ring-[#DB4444] md:h-10 md:w-60 md:text-[14px]"
             />
-            <div className="absolute right-3 top-1/2 -translate-y-1/2">
+            <button className="absolute right-3 top-1/2 -translate-y-1/2">
               <Image
                 src="/assets/icons/search.png"
                 alt="Search"
-                width={20}
-                height={20}
+                width={18}
+                height={18}
               />
-            </div>
+            </button>
           </div>
 
-          <button onClick={() => handleMenuClick("/wishlist")} className="relative">
+          <Link
+            href="/wishlist"
+            aria-label="Wishlist"
+            className="relative transition-transform hover:scale-110"
+          >
             <Image
               src="/assets/icons/wishlist.png"
               alt="Wishlist"
-              width={32}
-              height={32}
+              width={28}
+              height={28}
+              className="md:h-8 md:w-8"
             />
-          </button>
+          </Link>
 
-          <button className="relative">
+          <Link
+            href="/cart"
+            aria-label="Cart"
+            className="relative transition-transform hover:scale-110"
+          >
             <Image
               src="/assets/icons/cart.png"
               alt="Cart"
-              width={32}
-              height={32}
+              width={28}
+              height={28}
+              className="md:h-8 md:w-8"
             />
-            <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] text-white">
+            <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-[#DB4444] text-[10px] font-medium text-white">
               2
             </span>
-          </button>
+          </Link>
 
           {/* User Dropdown */}
           <div className="relative" ref={dropdownRef}>
             <button
               onClick={handleUserIconClick}
               className="flex h-8 w-8 items-center justify-center rounded-full bg-[#DB4444] transition-all hover:bg-red-600"
+              aria-label="User menu"
             >
               <Image
                 src="/assets/icons/user.png"
                 alt="User"
-                width={20}
-                height={20}
+                width={18}
+                height={18}
                 className="brightness-0 invert"
               />
             </button>
 
             {/* Dropdown Menu - Only show if user is logged in */}
             {user && isDropdownOpen && (
-              <div className="absolute right-0 top-12 z-50 w-56 rounded-md bg-gradient-to-b from-gray-800 to-gray-900 shadow-lg backdrop-blur-md">
+              <div className="absolute right-0 top-12 z-50 w-56 rounded-lg bg-gradient-to-b from-gray-800 to-gray-900 shadow-xl backdrop-blur-md">
                 <div className="py-2">
                   <button
-                    onClick={() => handleMenuClick("/")}
-                    className="flex w-full items-center gap-3 px-4 py-3 text-left text-[14px] text-white transition-colors hover:bg-white/10"
+                    onClick={() => handleMenuClick("/account", "profile")}
+                    className="flex w-full cursor-pointer items-center gap-3 px-4 py-3 text-left text-[14px] text-white transition-colors hover:bg-white/10"
                   >
                     <Image
                       src="/assets/icons/user.png"
                       alt="Account"
-                      width={24}
-                      height={24}
+                      width={20}
+                      height={20}
                       className="brightness-0 invert"
                     />
                     <span>Manage My Account</span>
                   </button>
 
                   <button
-                    onClick={() => handleMenuClick("/")}
-                    className="flex w-full items-center gap-3 px-4 py-3 text-left text-[14px] text-white transition-colors hover:bg-white/10"
+                    onClick={() => handleMenuClick("/account", "orders")}
+                    className="flex w-full cursor-pointer items-center gap-3 px-4 py-3 text-left text-[14px] text-white transition-colors hover:bg-white/10"
                   >
                     <Image
                       src="/assets/icons/mallbag.png"
-                      alt="Order"
-                      width={24}
-                      height={24}
+                      alt="Orders"
+                      width={20}
+                      height={20}
                       className="brightness-0 invert"
                     />
-                    <span>My Order</span>
+                    <span>My Orders</span>
                   </button>
 
                   <button
-                    onClick={() => handleMenuClick("/")}
-                    className="flex w-full items-center gap-3 px-4 py-3 text-left text-[14px] text-white transition-colors hover:bg-white/10"
+                    onClick={() => handleMenuClick("/account", "cancellations")}
+                    className="flex w-full cursor-pointer items-center gap-3 px-4 py-3 text-left text-[14px] text-white transition-colors hover:bg-white/10"
                   >
                     <Image
                       src="/assets/icons/cancel.png"
                       alt="Cancellations"
-                      width={24}
-                      height={24}
+                      width={20}
+                      height={20}
                       className="brightness-0 invert"
                     />
                     <span>My Cancellations</span>
-                  </button>
-
-                  <button
-                    onClick={() => handleMenuClick("/")}
-                    className="flex w-full items-center gap-3 px-4 py-3 text-left text-[14px] text-white transition-colors hover:bg-white/10"
-                  >
-                    <Image
-                      src="/assets/icons/reviews.png"
-                      alt="Reviews"
-                      width={24}
-                      height={24}
-                      className="brightness-0 invert"
-                    />
-                    <span>My Reviews</span>
                   </button>
 
                   <div className="my-1 border-t border-gray-600"></div>
 
                   <button
                     onClick={handleLogout}
-                    className="flex w-full items-center gap-3 px-4 py-3 text-left text-[14px] text-white transition-colors hover:bg-white/10"
+                    className="flex w-full cursor-pointer items-center gap-3 px-4 py-3 text-left text-[14px] text-white transition-colors hover:bg-white/10"
                   >
                     <Image
                       src="/assets/icons/logout.png"
                       alt="Logout"
-                      width={24}
-                      height={24}
+                      width={20}
+                      height={20}
                       className="brightness-0 invert"
                     />
                     <span>Logout</span>

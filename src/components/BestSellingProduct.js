@@ -2,6 +2,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useState, useRef } from "react";
 
 export default function BestSellingProduct() {
@@ -245,9 +246,9 @@ export default function BestSellingProduct() {
 
       {/* Button */}
       <div className="mt-12 flex justify-center">
-        <button className="rounded bg-[#DB4444] px-12 py-4 text-[16px] text-white">
+        <Link href="/shop" className="rounded bg-[#DB4444] px-12 py-4 text-[16px] text-white">
           View All Products
-        </button>
+        </Link>
       </div>
     </section>
   );

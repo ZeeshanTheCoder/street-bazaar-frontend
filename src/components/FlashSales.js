@@ -1,15 +1,16 @@
 // @/components/FlashSales.jsx
-'use client';
+"use client";
 
-import Image from 'next/image';
-import { useEffect, useState, useRef } from 'react';
+import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useState, useRef } from "react";
 
 export default function FlashSales() {
   const [time, setTime] = useState({
-    days: '03',
-    hours: '23',
-    minutes: '19',
-    seconds: '56',
+    days: "03",
+    hours: "23",
+    minutes: "19",
+    seconds: "56",
   });
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -17,74 +18,74 @@ export default function FlashSales() {
 
   const products = [
     {
-      discount: '-40%',
-      image: '/assets/images/home/game.png',
-      title: 'HAVIT HV-G92 Gamepad',
-      price: '$120',
-      old: '$160',
+      discount: "-40%",
+      image: "/assets/images/home/game.png",
+      title: "HAVIT HV-G92 Gamepad",
+      price: "$120",
+      old: "$160",
       reviews: 88,
       rating: 3,
     },
     {
-      discount: '-35%',
-      image: '/assets/images/home/keyboard.png',
-      title: 'AK-900 Wired Keyboard',
-      price: '$960',
-      old: '$1160',
+      discount: "-35%",
+      image: "/assets/images/home/keyboard.png",
+      title: "AK-900 Wired Keyboard",
+      price: "$960",
+      old: "$1160",
       reviews: 75,
       rating: 5,
     },
     {
-      discount: '-30%',
-      image: '/assets/images/home/lcd.png',
-      title: 'IPS LCD Gaming Monitor',
-      price: '$370',
-      old: '$400',
+      discount: "-30%",
+      image: "/assets/images/home/lcd.png",
+      title: "IPS LCD Gaming Monitor",
+      price: "$370",
+      old: "$400",
       reviews: 99,
       rating: 4,
     },
     {
-      discount: '-25%',
-      image: '/assets/images/home/chair.png',
-      title: 'S-Series Comfort Chair',
-      price: '$375',
-      old: '$400',
+      discount: "-25%",
+      image: "/assets/images/home/chair.png",
+      title: "S-Series Comfort Chair",
+      price: "$375",
+      old: "$400",
       reviews: 99,
       rating: 2,
     },
     {
-      discount: '-40%',
-      image: '/assets/images/home/game.png',
-      title: 'HAVIT HV-G92 Gamepad',
-      price: '$120',
-      old: '$160',
+      discount: "-40%",
+      image: "/assets/images/home/game.png",
+      title: "HAVIT HV-G92 Gamepad",
+      price: "$120",
+      old: "$160",
       reviews: 88,
       rating: 3,
     },
     {
-      discount: '-35%',
-      image: '/assets/images/home/keyboard.png',
-      title: 'AK-900 Wired Keyboard',
-      price: '$960',
-      old: '$1160',
+      discount: "-35%",
+      image: "/assets/images/home/keyboard.png",
+      title: "AK-900 Wired Keyboard",
+      price: "$960",
+      old: "$1160",
       reviews: 75,
       rating: 5,
     },
     {
-      discount: '-30%',
-      image: '/assets/images/home/lcd.png',
-      title: 'IPS LCD Gaming Monitor',
-      price: '$370',
-      old: '$400',
+      discount: "-30%",
+      image: "/assets/images/home/lcd.png",
+      title: "IPS LCD Gaming Monitor",
+      price: "$370",
+      old: "$400",
       reviews: 99,
       rating: 4,
     },
     {
-      discount: '-25%',
-      image: '/assets/images/home/chair.png',
-      title: 'S-Series Comfort Chair',
-      price: '$375',
-      old: '$400',
+      discount: "-25%",
+      image: "/assets/images/home/chair.png",
+      title: "S-Series Comfort Chair",
+      price: "$375",
+      old: "$400",
       reviews: 99,
       rating: 2,
     },
@@ -106,10 +107,10 @@ export default function FlashSales() {
       const s = Math.max(Math.floor((diff / 1000) % 60), 0);
 
       setTime({
-        days: String(d).padStart(2, '0'),
-        hours: String(h).padStart(2, '0'),
-        minutes: String(m).padStart(2, '0'),
-        seconds: String(s).padStart(2, '0'),
+        days: String(d).padStart(2, "0"),
+        hours: String(h).padStart(2, "0"),
+        minutes: String(m).padStart(2, "0"),
+        seconds: String(s).padStart(2, "0"),
       });
     }, 1000);
 
@@ -137,8 +138,8 @@ export default function FlashSales() {
     }
     handleResize();
 
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, [products.length]);
 
   const maxIndex = Math.max(products.length - visibleCards, 0);
@@ -158,7 +159,7 @@ export default function FlashSales() {
         <div className="flex flex-col gap-6 md:flex-row md:items-end md:gap-20">
           <div>
             <div className="mb-2 flex items-center gap-2">
-            <span className="h-8 w-4 rounded bg-[#DB4444] md:h-10 md:w-5"></span>
+              <span className="h-8 w-4 rounded bg-[#DB4444] md:h-10 md:w-5"></span>
               <span className="text-[14px] font-semibold text-[#DB4444]">
                 Today’s
               </span>
@@ -170,10 +171,10 @@ export default function FlashSales() {
 
           <div className="flex gap-4 md:gap-6">
             {[
-              { label: 'Days', value: time.days },
-              { label: 'Hours', value: time.hours },
-              { label: 'Minutes', value: time.minutes },
-              { label: 'Seconds', value: time.seconds },
+              { label: "Days", value: time.days },
+              { label: "Hours", value: time.hours },
+              { label: "Minutes", value: time.minutes },
+              { label: "Seconds", value: time.seconds },
             ].map((t, i) => (
               <div key={i} className="text-center">
                 <span className="block text-[12px] text-black">{t.label}</span>
@@ -216,19 +217,13 @@ export default function FlashSales() {
       </div>
 
       {/* Products */}
-      <div
-        ref={containerRef}
-        className="overflow-hidden"
-      >
+      <div ref={containerRef} className="overflow-hidden">
         <div
           className="flex gap-6 transition-transform duration-500 ease-in-out"
           style={{ transform: `translateX(-${currentIndex * CARD_WIDTH}px)` }}
         >
           {products.map((p, i) => (
-            <div
-              key={i}
-              className="group relative w-67.5 shrink-0"
-            >
+            <div key={i} className="group relative w-67.5 shrink-0">
               <div className="relative flex h-62.5 items-center justify-center bg-gray-100">
                 <span className="absolute left-3 top-3 rounded bg-[#DB4444] px-2 py-1 text-[12px] text-white">
                   {p.discount}
@@ -277,8 +272,8 @@ export default function FlashSales() {
                     key={idx}
                     src={
                       idx < p.rating
-                        ? '/assets/icons/yellow-star.png'
-                        : '/assets/icons/star.png'
+                        ? "/assets/icons/yellow-star.png"
+                        : "/assets/icons/star.png"
                     }
                     alt="Star"
                     width={16}
@@ -296,9 +291,12 @@ export default function FlashSales() {
 
       {/* Button */}
       <div className="mt-12 flex justify-center">
-        <button className="rounded bg-[#DB4444] px-12 py-4 text-[16px] text-white">
+        <Link
+          href="/shop"
+          className="rounded bg-[#DB4444] px-12 py-4 text-[16px] text-white"
+        >
           View All Products
-        </button>
+        </Link>
       </div>
     </section>
   );

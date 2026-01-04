@@ -112,7 +112,7 @@ export default function WishlistSection() {
                 {/* Delete Icon */}
                 <button
                   onClick={() => handleRemoveFromWishlist(index)}
-                  className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-white transition-colors hover:bg-gray-200"
+                  className="absolute right-3 top-3 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-white transition-colors hover:bg-gray-200"
                 >
                   <Image
                     src="/assets/icons/delete.png"
@@ -200,7 +200,7 @@ export default function WishlistSection() {
 
                 {/* Action Icons */}
                 <div className="absolute right-3 top-3 flex flex-col gap-2">
-                  <button className="flex h-8 w-8 items-center justify-center rounded-full bg-white transition-colors hover:bg-gray-200">
+                  <button className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-white transition-colors hover:bg-gray-200">
                     <Image
                       src="/assets/icons/wishlist.png"
                       alt="Wishlist"
@@ -208,7 +208,7 @@ export default function WishlistSection() {
                       height={20}
                     />
                   </button>
-                  <button className="flex h-8 w-8 items-center justify-center rounded-full bg-white transition-colors hover:bg-gray-200">
+                  <button className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-white transition-colors hover:bg-gray-200">
                     <Image
                       src="/assets/icons/view.png"
                       alt="View"
@@ -228,10 +228,13 @@ export default function WishlistSection() {
                 />
 
                 {/* Add to Cart Button - Always visible, no hover */}
-                <button
-                  onClick={() => handleAddToBag(product)}
-                  className="absolute bottom-0 left-0 right-0 flex h-10 items-center justify-center bg-black text-[14px] font-medium text-white md:text-[16px]"
-                >
+                <button className="absolute bottom-0 left-0 right-0 flex h-10 items-center justify-center gap-2 bg-black text-[14px] font-medium text-white transition-opacity md:text-[16px]">
+                  <Image
+                    src="/assets/icons/cart-white.png"
+                    alt="Cart"
+                    width={24}
+                    height={24}
+                  />
                   Add To Cart
                 </button>
               </div>
